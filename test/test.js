@@ -9,8 +9,8 @@ const TestComponent = Vue.extend({
   methods: {
     getDynamic () {
       this.$jsonp('http://live-api.bilibili.com/index/dynamic', {
-        name: 'LancerComet',
-        age: 26
+        name: 'MyName',
+        age: 20
       }).then(json => {
         console.log('JSONP Request success: ', json)
       }, json => {
