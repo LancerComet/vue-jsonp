@@ -40,7 +40,7 @@ this.$jsonp('/url', {
 ## Example.
 ```javascript
 import Vue from 'vue'
-import VueJsonp from '../index'
+import VueJsonp from 'vue-jsonp'
 Vue.use(VueJsonp)
 
 // If you want to setup the global timeout, just:
