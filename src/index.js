@@ -5,8 +5,8 @@
  */
 var _timeout = null
 
-module.exports = {
-  install (Vue, options) {
+var vueJsonp = {
+  install: function (Vue, options) {
     Vue.jsonp = jsonp
     Vue.prototype.$jsonp = jsonp
 
@@ -30,14 +30,17 @@ module.exports = {
  *     age: 26
  *   }, 1000)
  */
-function jsonp (url, params = {}, timeout = _timeout) {
-  return new Promise((resolve, reject) => {
+function jsonp (url, params, timeout) {
+  params = params || {}
+  timeout = timeout || _timeout
+
+  return new Promise(function (resolve, reject) {
     if (Object.prototype.toString.call(url) !== '[object String]') {
       throw new Error('[Vue.jsonp] Type of param "url" is not string.')
     }
 
-    const callbackQuery = params.callbackQuery || 'callback'
-    const callbackName = params.callbackName || 'jsonp_' + randomStr()
+    var callbackQuery = params.callbackQuery || 'callback'
+    var callbackName = params.callbackName || 'jsonp_' + randomStr()
 
     params[callbackQuery] = callbackName
 
@@ -67,8 +70,8 @@ function jsonp (url, params = {}, timeout = _timeout) {
     }
 
     // Create script element.
-    const headNode = document.querySelector('head')
-    const paddingScript = document.createElement('script')
+    var headNode = document.querySelector('head')
+    var paddingScript = document.createElement('script')
     paddingScript.src = url + '?' + queryStr
     headNode.appendChild(paddingScript)
   })
@@ -89,7 +92,7 @@ function randomStr () {
  * @return { String }
  */
 function formatParams (param) {
-  var arr = [];
+  var arr = []
   Object.keys(param).forEach(function (name) {
     arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(param[name]))
   })
