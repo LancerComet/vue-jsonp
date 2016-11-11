@@ -16,7 +16,10 @@ In Vue component:
 
 ## URL.
 ```javascript
-'/url?callbackQuery=callbackName&...'
+'/url?{callbackQuery}={callbackName}&...'
+
+// Default:
+'/url?callback=jsonp_RANDOM_STRING&...'
 ``` 
 
 ## Assign callback query name.
