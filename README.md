@@ -56,7 +56,7 @@ const SomeComponent = Vue.extend({
     getData () {
       this.$jsonp('http://www.some-site.com/data', { name: 'MyName', age: 20 }).then(json => {
         // Success.
-      }, json => {
+      }).catch(err => {
         // Failed.
       })
     }
@@ -69,7 +69,7 @@ Vue.jsonp('http://www.some-site.com/data', {
   name: 'MyName', age: 20, callbackQuery: 'cb', callbackName: 'jsonpFunc'
 }).then(json => {
   // Success.
-}, json => {
+}).catch(err => {
   // Failed.
 })
 ```
