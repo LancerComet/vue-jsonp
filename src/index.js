@@ -71,7 +71,7 @@ function jsonp (url, params, timeout) {
     // Create script element.
     var headNode = document.querySelector('head')
     var paddingScript = document.createElement('script')
-    paddingScript.src = url + '?' + queryStr
+    paddingScript.src = url + /\?/.test(url) ? '&' : '?' + queryStr
     headNode.appendChild(paddingScript)
   })
 
