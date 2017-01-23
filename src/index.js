@@ -48,8 +48,7 @@ function jsonp (url, params, timeout) {
     delete params.callbackName
 
     // Convert params to querying str.
-    var queryStr = ''
-    queryStr += formatParams(params)
+    var queryStr = formatParams(params)
   
     // Setup timeout.
     if (typeof timeout === 'number') {
