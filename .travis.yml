@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+  - "4"
+  - "6"
+
+install:
+  - npm install
+
+notifications:
+  email:
+    recipients:
+      - chw644@hotmail.com
+    on_success: always
+    on_failure: always
