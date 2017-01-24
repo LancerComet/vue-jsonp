@@ -4,7 +4,7 @@ const projectRoot = path.resolve(__dirname, '../')
 
 module.exports = function (config) {
   config.set({
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
     browserNoActivityTimeout: 0,
 
