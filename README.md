@@ -1,4 +1,7 @@
 # Vue-jsonp
+
+![Travis](https://travis-ci.org/LancerComet/vue-jsonp.svg?branch=master)
+
 A tiny library for handling JSONP request.
 
 ## Usage.
