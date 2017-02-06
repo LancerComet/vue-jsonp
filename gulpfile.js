@@ -10,7 +10,7 @@ const util = require('gulp-util')
 const ROOTPATH = path.resolve(__dirname)
 const ENTRY = `${ROOTPATH}/src/index.js`
 
-gulp.task('default', ['js:build'])
+gulp.task('default', ['js:umd'])
 
 gulp.task('js:build', () => {
   new browserify({ entries: [ENTRY] })

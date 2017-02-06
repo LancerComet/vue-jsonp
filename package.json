@@ -8,6 +8,8 @@
     "JSONP"
   ],
   "scripts": {
+    "build": "gulp",
+    "pretest": "gulp",
     "test": "karma start ./test/karma.conf.js --single-run"
   },
   "author": {

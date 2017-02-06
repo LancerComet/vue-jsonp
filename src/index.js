@@ -1,8 +1,11 @@
 /**
  * Vue Jsonp By LancerComet at 16:35, 2016.10.17.
  * # Carry Your World #
- * License MIT.
+ * 
+ * @author: LancerComet
+ * @license: MIT
  */
+
 var _timeout = null
 
 var vueJsonp = {
@@ -44,17 +47,21 @@ function jsonp (url, params, timeout) {
 
     params[callbackQuery] = callbackName
 
+    // Remove callbackQuery and callbackName.
     delete params.callbackQuery
     delete params.callbackName
 
     // Convert params to querying str.
     var queryStr = formatParams(params)
+
+    // Timeout timer.
+    var timeoutTimer = null
   
     // Setup timeout.
     if (typeof timeout === 'number') {
-      var timer = setTimeout(function () {
-        clearTimeout(timer)
-        headNode.removeChild(paddingScript)        
+      timeoutTimer = setTimeout(function () {
+        removeErrorListener()        
+        headNode.removeChild(paddingScript)
         delete window[callbackName]
         reject({ statusText: 'Request Timeout', status: 408 })
       }, timeout)
@@ -62,17 +69,42 @@ function jsonp (url, params, timeout) {
   
     // Create global function.
     window[callbackName] = function (json) {
-      clearTimeout(timer)      
+      clearTimeout(timeoutTimer)
+      removeErrorListener()   
       headNode.removeChild(paddingScript)
-      delete window[callbackName]
       resolve(json)
+      delete window[callbackName]
     }
 
     // Create script element.
     var headNode = document.querySelector('head')
     var paddingScript = document.createElement('script')
+
+    // Add error listener.
+    paddingScript.addEventListener('error', onError)
+
+    // Append to head element.
     paddingScript.src = url + (/\?/.test(url) ? '&' : '?') + queryStr
     headNode.appendChild(paddingScript)
+
+    /**
+     * Padding script on-error event.
+     * @param {Event} event
+     */
+    function onError (event) {
+      removeErrorListener()
+      reject({
+        status: 400,
+        statusText: 'Bad Request'
+      })
+    }
+
+    /**
+     * Remove on-error event listener.
+     */
+    function removeErrorListener () {
+      paddingScript.removeEventListener('error', onError)
+    }
   })
 
 }
