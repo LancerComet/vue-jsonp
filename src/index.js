@@ -93,6 +93,7 @@ function jsonp (url, params, timeout) {
      */
     function onError (event) {
       removeErrorListener()
+      clearTimeout(timeoutTimer)
       reject({
         status: 400,
         statusText: 'Bad Request'
