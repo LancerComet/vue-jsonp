@@ -1,6 +1,6 @@
 {
   "name": "vue-jsonp",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A tiny library for handling JSONP request.",
   "main": "dist/vue-jsonp.umd.js",
   "keywords": [
