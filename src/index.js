@@ -45,8 +45,6 @@ function jsonp (url, params, timeout) {
     var callbackQuery = params.callbackQuery || 'callback'
     var callbackName = params.callbackName || 'jsonp_' + randomStr()
 
-    params[callbackQuery] = callbackName
-
     // Remove callbackQuery and callbackName.
     delete params.callbackQuery
     delete params.callbackName
