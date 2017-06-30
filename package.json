@@ -21,6 +21,7 @@
     "url": "https://github.com/LancerComet/vue-jsonp.git"
   },
   "license": "MIT",
+  "typings": "index.d.ts",
   "devDependencies": {
     "aliasify": "^2.0.0",
     "babel-core": "^6.17.0",
