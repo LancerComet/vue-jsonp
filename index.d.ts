@@ -8,12 +8,12 @@ interface IParam {
 }
 
 declare module 'vue' {
-  function jsonp (url: string, param: IParam, timeout?: number): void  
+  function jsonp (url: string, param: IParam, timeout?: number): Promise<any>
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $jsonp (url: string, param: IParam, timeout?: number): void
+    $jsonp (url: string, param: IParam, timeout?: number): Promise<any>
   }
 }
 
