@@ -4,7 +4,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory();
   } else {
-    root.Index = factory();
+    root.vueJsonp = factory();
   }
 }(this, function() {
 /**

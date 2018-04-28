@@ -38,6 +38,23 @@ describe('Param format testing.', function () {
 
     expect(decodeURIComponent(result)).equal(expected)
   })
+
+  it('Should format params correctly - from issue.', function () {
+    var self = {
+      email: 'mail@hotmail.com',
+      first_name: 'FirstName',
+      last_name: 'LastName'
+    }
+
+    var result = createQueryStr({
+      'EMAIL': self.email,
+      'FNAME': self.first_name,
+      'LNAME': self.last_name
+    })
+
+    var expected = 'EMAIL=' + self.email + '&FNAME=' + self.first_name + '&LNAME=' + self.last_name
+    expect(decodeURIComponent(result)).equal(expected)
+  })
 })
 
 function createQueryStr (param) {
