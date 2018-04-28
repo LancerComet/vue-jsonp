@@ -1,0 +1,7 @@
+.vscode/
+src/
+test/
+.babelrc
+.editorconfig
+.travis.yml
+gulpfile.js

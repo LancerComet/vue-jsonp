@@ -43,7 +43,12 @@ gulp.task('js:build', () => {
 gulp.task('js:umd', (file) => {
   gulp.src(ENTRY)
     .pipe(umd({
-      exports: function (file) { return 'vueJsonp' }
+      exports (file) {
+        return 'vueJsonp'
+      },
+      namespace (file) {
+        return 'vueJsonp'
+      }
     }))
     .pipe(rename('vue-jsonp.umd.js'))
     .pipe(gulp.dest(`${ROOTPATH}/dist`))
