@@ -1,6 +1,6 @@
 # Vue-jsonp
 
-![Travis](https://travis-ci.org/LancerComet/vue-jsonp.svg?branch=master)
+[![VueJsonp](https://github.com/LancerComet/vue-jsonp/workflows/Test/badge.svg)](https://github.com/LancerComet/vue-jsonp/actions)
 
 A tiny library for handling JSONP request.
 
