@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ES2018",
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": [
+      "dom",
+      "ES5",
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018"
+    ]
+  }
+}
