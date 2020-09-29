@@ -8,7 +8,7 @@ describe('VueJsonp testing.', () => {
     })
 
     await page.addScriptTag({
-      path: path.resolve(__dirname, './assets/vue.min.js')
+      path: path.resolve(__dirname, '../node_modules/vue/dist/vue.min.js')
     })
 
     const result = await page.evaluate(async () => {
