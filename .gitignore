@@ -44,5 +44,8 @@ jspm_packages
 *.tgz
 
 #IDEs.
-.ieda/
+.idea/
 .vscode/
+
+# Dist.
+dist/
