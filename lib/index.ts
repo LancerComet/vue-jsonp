@@ -20,7 +20,10 @@ declare module 'vue/types/vue' {
 }
 
 /**
- * Vue JSONP.
+ * JSONP Vue plugin.
+ *
+ * @example
+ * Vue.use(VueJsonp)
  */
 // tslint:disable-next-line:variable-name
 const VueJsonp: PluginObject<never> = {
@@ -30,19 +33,19 @@ const VueJsonp: PluginObject<never> = {
 }
 
 /**
- * JSONP function.
+ * Make a json request.
  *
- * @param { string } url Target URL address.
- * @param { IJsonpParam } param Querying params object.
- * @param { number } timeout Timeout setting (ms).
+ * @template T
+ * @param {string} url Target URL address.
+ * @param {IJsonpParam} [param={}] Querying params object.
+ * @param {number} [timeout] Timeout setting (ms).
+ * @returns {Promise<T>}
  *
  * @example
- * jsonp('/url', {
- *   callbackQuery: ''
- *   callbackName: '',
- *   name: 'LancerComet',
- *   age: 26
- * }, 1000)
+ * const data = await jsonp<string>('/url', {
+ *   type: 'admin',
+ *   date: '2020'
+ * })
  */
 function jsonp<T = any> (
   url: string,
@@ -151,7 +154,7 @@ interface IJsonpParam {
    *
    * @example
    * // The request url will be "/some-url?myCallback=jsonp_func&myCustomUrlParam=veryNice"
-   * jsonp('/some-url', {
+   * const result = await jsonp('/some-url', {
    *   callbackQuery: 'myCallback',
    *   callbackName: 'jsonp_func',
    *   myCustomUrlParam: 'veryNice'
@@ -167,7 +170,7 @@ interface IJsonpParam {
    *
    * @example
    * // The request url will be "/some-url?myCallback=jsonp_func&myCustomUrlParam=veryNice"
-   * jsonp('/some-url', {
+   * const result = await jsonp('/some-url', {
    *   callbackQuery: 'myCallback',
    *   callbackName: 'jsonp_func',
    *   myCustomUrlParam: 'veryNice'
