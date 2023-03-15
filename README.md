@@ -1,5 +1,6 @@
 # Vue-jsonp
 
+[![npm version](https://badge.fury.io/js/vue-jsonp.svg)](https://badge.fury.io/js/vue-jsonp)
 [![VueJsonp](https://github.com/LancerComet/vue-jsonp/workflows/Test/badge.svg)](https://github.com/LancerComet/vue-jsonp/actions)
 
 A tiny library for handling JSONP request.
@@ -14,9 +15,9 @@ import { VueJsonp } from 'vue-jsonp'
 // Vue Plugin.
 Vue.use(VueJsonp)
 
-// Now you can use this.$jsonp in Vue components.
+// Now you can use "$jsonp" on Vue components.
 const vm = new Vue()
-vm.$jsonp('/some-jsonp-url', {
+const data = await vm.$jsonp('/some-jsonp-url', {
   myCustomUrlParam: 'veryNice'
 })
 ```
@@ -26,7 +27,8 @@ Use function directly:
 ```ts
 import { jsonp } from 'vue-jsonp'
 
-jsonp('/some-jsonp-url', {
+// Pass a response type.
+const data = await jsonp<string>('/some-jsonp-url', {
   myCustomUrlParam: 'veryNice'
 })
 ```
@@ -36,26 +38,26 @@ jsonp('/some-jsonp-url', {
 ### Send data
 
 ```ts
-// The request url will be "/some-jsonp-url?name=LancerComet&age=100&callback=jsonp_{RANDOM_STR}".
-jsonp('/some-jsonp-url', {
-  name: 'LancerComet',
-  age: 100
+// The request url will be "/some-jsonp-url?type=admin&date=2020&callback=jsonp_{RANDOM_STR}".
+const data = await jsonp('/some-jsonp-url', {
+  type: 'admin',
+  date: 2020
 })
 ```
 
 ### Custom query & function name
 
-The url uniform is `/url?{callbackQuery}={callbackName}&...`, the default is `/url?callback=jsonp_{RANDOM_STRING}&...`.
+The url uniform is `/url?{callbackQuery}={callbackName}&...` and the default is `/url?callback=jsonp_{RANDOM_STRING}&...`.
 
 And you can change it like this:
 
 ```ts
-// The request url will be "/some-jsonp-url?name=LancerComet&age=100&cb=jsonp_func".
+// The request url will be "/some-jsonp-url?type=admin&date=2020&cb=jsonp_func".
 jsonp('/some-jsonp-url', {
   callbackQuery: 'cb',
   callbackName: 'jsonp_func',
-  name: 'LancerComet',
-  age: 100
+  type: 'admin',
+  date: 2020
 })
 ```
 
@@ -82,7 +84,7 @@ interface IJsonpParam {
    *
    * @example
    * // The request url will be "/some-url?myCallback=jsonp_func&myCustomUrlParam=veryNice"
-   * jsonp('/some-url', {
+   * const result = await jsonp('/some-url', {
    *   callbackQuery: 'myCallback',
    *   callbackName: 'jsonp_func',
    *   myCustomUrlParam: 'veryNice'
@@ -98,7 +100,7 @@ interface IJsonpParam {
    *
    * @example
    * // The request url will be "/some-url?myCallback=jsonp_func&myCustomUrlParam=veryNice"
-   * jsonp('/some-url', {
+   * const result = await jsonp('/some-url', {
    *   callbackQuery: 'myCallback',
    *   callbackName: 'jsonp_func',
    *   myCustomUrlParam: 'veryNice'
