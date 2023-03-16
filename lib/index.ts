@@ -47,10 +47,12 @@ const VueJsonp: PluginObject<never> = {
  *   date: '2020'
  * })
  */
+function jsonp<T = any> (url: string, param?: IJsonpParam, timeout?: number): Promise<T>
+function jsonp<T = any> (url: string, param?: IJsonpParam, config?: IConfig): Promise<T>
 function jsonp<T = any> (
   url: string,
   param: IJsonpParam = {},
-  timeout?: number
+  config?: undefined | number | IConfig
 ): Promise<T> {
   if (typeof url !== 'string') {
     throw new Error('[Vue-jsonp] Type of param "url" is not string.')
@@ -60,9 +62,17 @@ function jsonp<T = any> (
     throw new Error('[Vue-jsonp] Invalid params, should be an object.')
   }
 
-  timeout = typeof timeout === 'number'
-    ? timeout
-    : DEFAULT_TIMEOUT
+  const timeout = typeof config === 'number'
+    ? config
+    : config?.timeout ?? DEFAULT_TIMEOUT
+
+  let arrayIndicator = '[]'
+  if (typeof config === 'object') {
+    const _indicator = config.arrayIndicator
+    if (typeof _indicator === 'string') {
+      arrayIndicator = _indicator
+    }
+  }
 
   return new Promise<T>((resolve, reject) => {
     const callbackQuery = typeof param.callbackQuery === 'string'
@@ -81,7 +91,7 @@ function jsonp<T = any> (
     // Convert params to querying str.
     let queryStrs: (string[])[] = []
     Object.keys(param).forEach(queryKey => {
-      queryStrs = queryStrs.concat(formatParams(queryKey, param[queryKey]))
+      queryStrs = queryStrs.concat(formatParams(queryKey, param[queryKey], arrayIndicator))
     })
 
     const queryStr = flatten(queryStrs).join('&')
@@ -184,4 +194,30 @@ interface IJsonpParam {
    * Custom data.
    */
   [key: string]: any
+}
+
+/**
+ * JSONP Config.
+ */
+interface IConfig {
+  /**
+   * Request timeout, ms.
+   *
+   * @default 5000
+   */
+  timeout?: number
+
+  /**
+   * This is the indicator that used in query string to indicate arrays.
+   *
+   * @example
+   * // When you pass a '[]' or nothing:
+   * a[]=1&a[]=2&a[]=3  // This form is used widely.
+   *
+   * // An empty sring was passed:
+   * a=1&a=2&a=3  // This is a custom example.
+   *
+   * @default '[]'
+   */
+  arrayIndicator?: string
 }
