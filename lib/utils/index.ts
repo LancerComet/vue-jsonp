@@ -16,7 +16,7 @@ function formatParams (queryKey: string, value: any): string[] {
   queryKey = queryKey.replace(/=/g, '')
   let result: string[] = []
 
-  switch (value.constructor) {
+  switch (value && value.constructor) {
     case String:
     case Number:
     case Boolean:
