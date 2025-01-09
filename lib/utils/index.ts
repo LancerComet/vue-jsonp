@@ -16,6 +16,10 @@ function formatParams (queryKey: string, value: any, arrayIndicator: string = '[
   queryKey = queryKey.replace(/=/g, '')
   let result: string[] = []
 
+  if (value === null || typeof value === 'undefined') {
+    return result
+  }
+
   switch (value.constructor) {
     case String:
     case Number:

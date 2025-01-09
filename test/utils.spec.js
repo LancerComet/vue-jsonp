@@ -67,6 +67,19 @@ describe('Utils test.', () => {
     const expected = 'a=a&b=1&b=2&b=3&c[d]=d&c[e]=1&c[e]=2&c[e][wow]=true'
     expect(decodeURIComponent(result)).toBe(expected)
   })
+
+  // Fix for #41.
+  it('It should get correct params when undefined or null was got.', () => {
+    const params = {
+      a: undefined,
+      b: null,
+      c: 'c',
+      d: 1
+    }
+    const result = createQueryStr(params)
+    const expected = 'c=c&d=1'
+    expect(decodeURIComponent(result)).toBe(expected)
+  })
 })
 
 function createQueryStr (param, arraySeprator) {
