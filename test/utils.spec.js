@@ -54,12 +54,38 @@ describe('Utils test.', () => {
     const expected = 'EMAIL=' + self.email + '&FNAME=' + self.first_name + '&LNAME=' + self.last_name
     expect(decodeURIComponent(result)).toBe(expected)
   })
+
+  it('Array separator should be configurable.', () => {
+    const result = createQueryStr({
+      a: 'a',
+      b: ['1', '2', '3'],
+      c: {
+        d: 'd',
+        e: [1, 2, { wow: true }]
+      }
+    }, '')
+    const expected = 'a=a&b=1&b=2&b=3&c[d]=d&c[e]=1&c[e]=2&c[e][wow]=true'
+    expect(decodeURIComponent(result)).toBe(expected)
+  })
+
+  // Fix for #41.
+  it('It should get correct params when undefined or null was got.', () => {
+    const params = {
+      a: undefined,
+      b: null,
+      c: 'c',
+      d: 1
+    }
+    const result = createQueryStr(params)
+    const expected = 'c=c&d=1'
+    expect(decodeURIComponent(result)).toBe(expected)
+  })
 })
 
-function createQueryStr (param) {
+function createQueryStr (param, arraySeprator) {
   const querys = []
   Object.keys(param).forEach(keyName => {
-    querys.push(formatParams(keyName, param[keyName]))
+    querys.push(formatParams(keyName, param[keyName], arraySeprator))
   })
   return flatten(querys).join('&')
 }

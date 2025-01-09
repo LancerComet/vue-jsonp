@@ -12,9 +12,13 @@ function randomStr () {
  *
  * @return {string[]}
  */
-function formatParams (queryKey: string, value: any): string[] {
+function formatParams (queryKey: string, value: any, arrayIndicator: string = '[]'): string[] {
   queryKey = queryKey.replace(/=/g, '')
   let result: string[] = []
+
+  if (value === null || typeof value === 'undefined') {
+    return result
+  }
 
   switch (value.constructor) {
     case String:
@@ -25,14 +29,14 @@ function formatParams (queryKey: string, value: any): string[] {
 
     case Array:
       value.forEach(function (item) {
-        result = result.concat(formatParams(queryKey + '[]=', item))
+        result = result.concat(formatParams(`${queryKey}${arrayIndicator}=`, item, arrayIndicator))
       })
       break
 
     case Object:
       Object.keys(value).forEach(function (key) {
         const item = value[key]
-        result = result.concat(formatParams(queryKey + '[' + key + ']', item))
+        result = result.concat(formatParams(queryKey + '[' + key + ']', item, arrayIndicator))
       })
       break
   }

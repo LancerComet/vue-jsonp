@@ -20,7 +20,10 @@ declare module 'vue/types/vue' {
 }
 
 /**
- * Vue JSONP.
+ * JSONP Vue plugin.
+ *
+ * @example
+ * Vue.use(VueJsonp)
  */
 // tslint:disable-next-line:variable-name
 const VueJsonp: PluginObject<never> = {
@@ -30,24 +33,26 @@ const VueJsonp: PluginObject<never> = {
 }
 
 /**
- * JSONP function.
+ * Make a json request.
  *
- * @param { string } url Target URL address.
- * @param { IJsonpParam } param Querying params object.
- * @param { number } timeout Timeout setting (ms).
+ * @template T
+ * @param {string} url Target URL address.
+ * @param {IJsonpParam} [param={}] Querying params object.
+ * @param {number} [timeout] Timeout setting (ms).
+ * @returns {Promise<T>}
  *
  * @example
- * jsonp('/url', {
- *   callbackQuery: ''
- *   callbackName: '',
- *   name: 'LancerComet',
- *   age: 26
- * }, 1000)
+ * const data = await jsonp<string>('/url', {
+ *   type: 'admin',
+ *   date: '2020'
+ * })
  */
+function jsonp<T = any> (url: string, param?: IJsonpParam, timeout?: number): Promise<T>
+function jsonp<T = any> (url: string, param?: IJsonpParam, config?: IConfig): Promise<T>
 function jsonp<T = any> (
   url: string,
   param: IJsonpParam = {},
-  timeout?: number
+  config?: undefined | number | IConfig
 ): Promise<T> {
   if (typeof url !== 'string') {
     throw new Error('[Vue-jsonp] Type of param "url" is not string.')
@@ -57,9 +62,17 @@ function jsonp<T = any> (
     throw new Error('[Vue-jsonp] Invalid params, should be an object.')
   }
 
-  timeout = typeof timeout === 'number'
-    ? timeout
-    : DEFAULT_TIMEOUT
+  const timeout = typeof config === 'number'
+    ? config
+    : config?.timeout ?? DEFAULT_TIMEOUT
+
+  let arrayIndicator = '[]'
+  if (typeof config === 'object') {
+    const _indicator = config.arrayIndicator
+    if (typeof _indicator === 'string') {
+      arrayIndicator = _indicator
+    }
+  }
 
   return new Promise<T>((resolve, reject) => {
     const callbackQuery = typeof param.callbackQuery === 'string'
@@ -78,7 +91,7 @@ function jsonp<T = any> (
     // Convert params to querying str.
     let queryStrs: (string[])[] = []
     Object.keys(param).forEach(queryKey => {
-      queryStrs = queryStrs.concat(formatParams(queryKey, param[queryKey]))
+      queryStrs = queryStrs.concat(formatParams(queryKey, param[queryKey], arrayIndicator))
     })
 
     const queryStr = flatten(queryStrs).join('&')
@@ -151,7 +164,7 @@ interface IJsonpParam {
    *
    * @example
    * // The request url will be "/some-url?myCallback=jsonp_func&myCustomUrlParam=veryNice"
-   * jsonp('/some-url', {
+   * const result = await jsonp('/some-url', {
    *   callbackQuery: 'myCallback',
    *   callbackName: 'jsonp_func',
    *   myCustomUrlParam: 'veryNice'
@@ -167,7 +180,7 @@ interface IJsonpParam {
    *
    * @example
    * // The request url will be "/some-url?myCallback=jsonp_func&myCustomUrlParam=veryNice"
-   * jsonp('/some-url', {
+   * const result = await jsonp('/some-url', {
    *   callbackQuery: 'myCallback',
    *   callbackName: 'jsonp_func',
    *   myCustomUrlParam: 'veryNice'
@@ -181,4 +194,30 @@ interface IJsonpParam {
    * Custom data.
    */
   [key: string]: any
+}
+
+/**
+ * JSONP Config.
+ */
+interface IConfig {
+  /**
+   * Request timeout, ms.
+   *
+   * @default 5000
+   */
+  timeout?: number
+
+  /**
+   * This is the indicator that used in query string to indicate arrays.
+   *
+   * @example
+   * // When you pass a '[]' or nothing:
+   * a[]=1&a[]=2&a[]=3  // This form is used widely.
+   *
+   * // An empty sring was passed:
+   * a=1&a=2&a=3  // This is a custom example.
+   *
+   * @default '[]'
+   */
+  arrayIndicator?: string
 }
